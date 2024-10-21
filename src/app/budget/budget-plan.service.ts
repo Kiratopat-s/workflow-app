@@ -62,4 +62,8 @@ export class BudgetPlanService {
     // this.balance = this.budgetPlanState().available - this.budgetPlanState().used
     console.log(BudgetPlanService.name, 'updateBaseUsed', this.budgetPlanState())
   }
+
+  updateUsed(used: number) {
+    this.budgetPlanState.update(v => ({ ...v, used }))
+  }
 }

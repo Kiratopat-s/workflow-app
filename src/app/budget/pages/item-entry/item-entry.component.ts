@@ -11,7 +11,7 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-item-entry',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MobileFormatPipe, DecimalPipe, RouterLink], // add RouterLink
+  imports: [FormsModule, ReactiveFormsModule, MobileFormatPipe, DecimalPipe, RouterLink],
   templateUrl: './item-entry.component.html',
   styleUrl: './item-entry.component.scss'
 })
@@ -40,7 +40,12 @@ export class ItemEntryComponent {
         console.log('keyword', keyword)
         this.filterItems = this.items.filter((item) => item.title.toLocaleLowerCase().includes(keyword)); // เขียน logic จากการเปลี่ยน value ได้
       });
+  }
 
-
+  onDelete(id: number) {
+    return this.itemService.delete(id).subscribe(v => {
+      this.items = this.items.filter(item => item.id != id)
+      this.filterItems = this.items
+    });
   }
 }

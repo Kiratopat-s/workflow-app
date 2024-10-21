@@ -29,8 +29,7 @@ export class ItemService {
     return this.httpClient.patch<Item>(`${this.URL}/${id}`, item);
   }
 
-
-
-
-
+  delete(id: number) {
+    return this.httpClient.delete<void>(`${this.URL}/${id}`);
+  }
 }

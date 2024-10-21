@@ -1,19 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { CreateItem, EditIem, Item } from './models/item';
-import { Observable } from 'rxjs';
+import { CreateItem, EditIem, Item, ItemStatus } from './models/item';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ItemService {
-
   readonly URL = 'http://localhost:3000/items';
-  private httpClient = inject(HttpClient)
+  private httpClient = inject(HttpClient);
 
   constructor() { }
 
-  list(): Observable<Item[]> {
+  list() {
     return this.httpClient.get<Item[]>(this.URL);
   }
 
@@ -31,5 +29,14 @@ export class ItemService {
 
   delete(id: number) {
     return this.httpClient.delete<void>(`${this.URL}/${id}`);
+  }
+
+  // TODO: temp update by front-end
+  approve(id: number) {
+    return this.httpClient.patch<Item>(`${this.URL}/${id}`, { status: ItemStatus.APPROVED });
+  }
+
+  reject(id: number) {
+    return this.httpClient.patch<Item>(`${this.URL}/${id}`, { status: ItemStatus.REJECTED });
   }
 }

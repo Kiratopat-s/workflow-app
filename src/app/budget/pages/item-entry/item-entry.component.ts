@@ -3,11 +3,12 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { map } from 'rxjs';
 import { ItemService } from '../../item.service';
 import { Item } from '../../models/item';
+import { MobileFormatPipe } from '../../../shared/pipes/mobile-format.pipe';
 
 @Component({
   selector: 'app-item-entry',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, MobileFormatPipe], // add
   templateUrl: './item-entry.component.html',
   styleUrl: './item-entry.component.scss'
 })

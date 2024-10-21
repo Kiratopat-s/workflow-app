@@ -4,11 +4,12 @@ import { map } from 'rxjs';
 import { ItemService } from '../../item.service';
 import { Item } from '../../models/item';
 import { MobileFormatPipe } from '../../../shared/pipes/mobile-format.pipe';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-item-entry',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MobileFormatPipe], // add
+  imports: [FormsModule, ReactiveFormsModule, MobileFormatPipe, DecimalPipe], // add
   templateUrl: './item-entry.component.html',
   styleUrl: './item-entry.component.scss'
 })

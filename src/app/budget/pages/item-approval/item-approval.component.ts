@@ -6,13 +6,14 @@ import { ConfirmModalComponent } from '../../../shared/components/confirm-modal/
 import { MobileFormatPipe } from '../../../shared/pipes/mobile-format.pipe';
 import { ItemService } from '../../item.service';
 import { Item, ItemStatus } from '../../models/item';
+import { BudgetPlanComponent } from '../../components/budget-plan/budget-plan.component';
 
 type ItemAction = 'Approve' | 'Reject';
 
 @Component({
   selector: 'app-item-approval',
   standalone: true,
-  imports: [ReactiveFormsModule, DecimalPipe, MobileFormatPipe],
+  imports: [ReactiveFormsModule, DecimalPipe, MobileFormatPipe, BudgetPlanComponent], // add
   templateUrl: './item-approval.component.html',
   styleUrl: './item-approval.component.scss'
 })
@@ -53,7 +54,9 @@ export class ItemApprovalComponent {
   }
 
   onApprove(id: number) {
+    // in api
     this.itemService.approve(id).subscribe(() => {
+      // in front-end
       this.items = this.items.map((v) => (v.id === id ? { ...v, status: ItemStatus.APPROVED } : v));
     });
   }

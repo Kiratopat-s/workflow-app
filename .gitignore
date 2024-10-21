@@ -44,3 +44,4 @@ Thumbs.db
 
 # Mock-api
 /mock
+mock/budget-api/v1.json

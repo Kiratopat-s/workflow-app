@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { routes } from '../../app.routes';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -11,6 +10,7 @@ import { RouterLink } from '@angular/router';
 })
 export class NavbarComponent {
   menus = [
-    { path: 'budget/item-entry', title: 'Entry' }
+    { path: 'budget/item-entry', title: 'Entry' },
+    { path: 'budget/item-approval', title: 'Approval' }
   ]
 }

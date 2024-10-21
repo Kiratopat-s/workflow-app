@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { Item, ItemStatus } from '../../models/item';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { map } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { ItemService } from '../../item.service';
+import { Item } from '../../models/item';
 
 @Component({
   selector: 'app-item-entry',
@@ -12,29 +12,26 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './item-entry.component.scss'
 })
 export class ItemEntryComponent {
+  isSmallTable = false;
 
-  isSmallTable = false
+  itemService = inject(ItemService);
 
-  httpClient = inject(HttpClient)
-
-  items: Item[] = []
+  items: Item[] = [];
   filterItems = this.items;
-  filterInput = new FormControl<string>('', { nonNullable: true })
+  filterInput = new FormControl<string>('', { nonNullable: true });
 
   constructor() {
-
-    this.httpClient.get<Item[]>('http://localhost:3000/items').subscribe(vs => {
+    this.itemService.list().subscribe((vs) => {
       this.items = vs;
       this.filterItems = vs;
-    })
+    });
 
     this.filterInput.valueChanges
-      .pipe(
-        map(keyword => keyword.toLocaleLowerCase())
-      )
-      .subscribe(keyword => {
-        this.filterItems = this.items.filter(item => item.title.toLocaleLowerCase().includes(keyword))
-      })
+      .pipe(map((keyword) => keyword.toLocaleLowerCase()))
+      .subscribe((keyword) => {
+        this.filterItems = this.items.filter((item) =>
+          item.title.toLocaleLowerCase().includes(keyword)
+        );
+      });
   }
-
 }

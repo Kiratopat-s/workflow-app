@@ -2,6 +2,8 @@ import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JsonPipe, Location } from '@angular/common';
 import { thMobile } from '../../../shared/validators/th-mobile.validator';
+import { ItemService } from '../../item.service';
+import { ItemStatus } from '../../models/item';
 
 @Component({
   selector: 'app-item-form',
@@ -15,6 +17,8 @@ export class ItemFormComponent {
   location = inject(Location);
 
   fb = inject(NonNullableFormBuilder)
+
+  itemService = inject(ItemService)
 
   // formControls
   title = this.fb.control<string>('', { validators: Validators.required });
@@ -35,6 +39,7 @@ export class ItemFormComponent {
   }
 
   onSubmit(): void {
-    console.log(this.fg.getRawValue())
+    const item = { ...this.fg.getRawValue(), status: ItemStatus.PENDING };
+    this.itemService.add(item).subscribe(v => this.onBack())
   }
 }

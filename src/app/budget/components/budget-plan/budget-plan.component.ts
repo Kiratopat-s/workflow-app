@@ -16,7 +16,8 @@ export class BudgetPlanComponent {
   editable: boolean = false;
 
   budgetPlanService = inject(BudgetPlanService);
-  budgetPlan = this.budgetPlanService.budgetPlan;
+  // budgetPlan = this.budgetPlanService.budgetPlan;
+  budgetPlanState = this.budgetPlanService.budgetPlanState;
   balance = this.budgetPlanService.balance;
 
   availablePercent = new FormControl<number>(this.budgetPlanService.DEFAULT_AVAILABLE_PERCENT, {

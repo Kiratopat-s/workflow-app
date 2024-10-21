@@ -1,10 +1,11 @@
+import { FormsModule } from '@angular/forms';
 import { Component } from '@angular/core';
 import { Item, ItemStatus } from '../../models/item';
 
 @Component({
   selector: 'app-item-entry',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './item-entry.component.html',
   styleUrl: './item-entry.component.scss'
 })
@@ -35,4 +36,6 @@ export class ItemEntryComponent {
       id: 3
     }
   ];
+
+  isSmallTable = false;
 }

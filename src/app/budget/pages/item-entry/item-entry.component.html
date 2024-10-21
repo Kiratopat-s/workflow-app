@@ -1,6 +1,19 @@
-<!-- item-entry.component.html -->
 <h3 class="m-4">Item Entry</h3>
-<table class="table table-hover">
+
+<hr />
+<div class="bg-body-tertiary">
+  <h6>debugging</h6>
+  isSmallTable: {{ isSmallTable }}
+</div>
+
+<hr />
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" id="isSmallTable" [(ngModel)]="isSmallTable" />
+  <label class="form-check-label" for="isSmallTable">Show Small Table</label>
+</div>
+
+<hr />
+<table class="table table-hover" [class.table-sm]="isSmallTable">
   <thead>
     <th>#</th>
     <th>Title</th>

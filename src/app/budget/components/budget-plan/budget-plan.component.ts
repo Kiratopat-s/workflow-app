@@ -1,5 +1,5 @@
 import { DecimalPipe } from '@angular/common';
-import { booleanAttribute, Component, inject, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { startWith } from 'rxjs';
 import { BudgetPlanService } from '../../budget-plan.service';
@@ -12,13 +12,14 @@ import { BudgetPlanService } from '../../budget-plan.service';
   styleUrl: './budget-plan.component.scss'
 })
 export class BudgetPlanComponent {
-  @Input({ transform: booleanAttribute })
-  editable: boolean = false;
+  @Input()
+  editable = false;
 
   budgetPlanService = inject(BudgetPlanService);
   // budgetPlan = this.budgetPlanService.budgetPlan;
   budgetPlanState = this.budgetPlanService.budgetPlanState;
-  balance = this.budgetPlanService.balance;
+  // balance = this.budgetPlanService.balance;
+  balanceState = this.budgetPlanService.balanceState;
 
   availablePercent = new FormControl<number>(this.budgetPlanService.DEFAULT_AVAILABLE_PERCENT, {
     nonNullable: true

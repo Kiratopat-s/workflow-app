@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { BudgetPlan } from './models/budget-plan';
 
 const YEAR_BUDGETS = [
@@ -35,8 +35,10 @@ export class BudgetPlanService {
     used: 0
   });
 
-
-  balance = 0;
+  // balance = 0;
+  balanceState = computed(() => {
+    return this.budgetPlanState().available - this.budgetPlanState().used
+  });
 
   constructor() {
     const year = new Date().getFullYear();
@@ -57,7 +59,7 @@ export class BudgetPlanService {
       const available = v.total - (v.total * percent) / 100;
       return { ...v, available };
     })
-    this.balance = this.budgetPlanState().available - this.budgetPlanState().used
+    // this.balance = this.budgetPlanState().available - this.budgetPlanState().used
     console.log(BudgetPlanService.name, 'updateBaseUsed', this.budgetPlanState())
   }
 }

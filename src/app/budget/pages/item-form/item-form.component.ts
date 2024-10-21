@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JsonPipe, Location } from '@angular/common';
+import { thMobile } from '../../../shared/validators/th-mobile.validator';
 
 @Component({
   selector: 'app-item-form',
@@ -17,9 +18,9 @@ export class ItemFormComponent {
 
   // formControls
   title = this.fb.control<string>('', { validators: Validators.required });
-  contactMobileNo = this.fb.control<string>('', { validators: Validators.required });
-  amount = this.fb.control<number | null>(null, { validators: [Validators.required, Validators.min(1)] });
-  price = this.fb.control<number | null>(null, { validators: [Validators.required, Validators.min(0.5)] });
+  contactMobileNo = this.fb.control<string>('', { validators: [Validators.required, thMobile] });
+  amount = this.fb.control<number>(null!, { validators: [Validators.required, Validators.min(1)] });
+  price = this.fb.control<number>(null!, { validators: [Validators.required, Validators.min(0.5)] });
 
   // formGroup
   fg = this.fb.group({

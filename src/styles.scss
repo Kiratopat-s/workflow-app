@@ -1,6 +1,11 @@
 // bootstrap update primary color
 $primary: #630091;
-@import "bootstrap/scss/bootstrap";
+@import 'bootstrap/scss/bootstrap';
 
 // bootstrap-icons
-@import "bootstrap-icons/font/bootstrap-icons";
+@import 'bootstrap-icons/font/bootstrap-icons';
+
+// angular + bootstrap
+.ng-invalid.ng-touched {
+  @extend .is-invalid;
+}

@@ -13,14 +13,20 @@ export class ItemFormComponent {
 
   location = inject(Location);
 
+  fb = inject(NonNullableFormBuilder)
+
   // formControls
-  title = new FormControl<string>('', { nonNullable: true, validators: [Validators.required] })
-  contactMobileNo = new FormControl<string>('', { nonNullable: true })
+  title = this.fb.control<string>('', { validators: Validators.required });
+  contactMobileNo = this.fb.control<string>('', { validators: Validators.required });
+  amount = this.fb.control<number | null>(null, { validators: [Validators.required, Validators.min(1)] });
+  price = this.fb.control<number | null>(null, { validators: [Validators.required, Validators.min(0.5)] });
 
   // formGroup
-  fg = new FormGroup({
+  fg = this.fb.group({
     title: this.title,
-    contactMobileNo: this.contactMobileNo
+    contactMobileNo: this.contactMobileNo,
+    amount: this.amount,
+    price: this.price
   })
 
   onBack(): void {

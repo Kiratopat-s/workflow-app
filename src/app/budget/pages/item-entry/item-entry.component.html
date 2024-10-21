@@ -1,5 +1,4 @@
 <h3 class="m-4">Item Entry</h3>
-
 <hr />
 <div class="bg-body-tertiary">
   <h6>debugging</h6>
@@ -10,18 +9,17 @@
 <div class="row">
   <div class="col">
     <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="isSmallTable" [(ngModel)]="isSmallTable" />
-      <label class="form-check-label" for="isSmallTable">Show Small Table</label>
+      <input class="form-check-input" type="checkbox" id="isSmallTable" [(ngModel)]="isSmallTable">
+      <label class="form-check-label" for="isSmallTable">
+        Show Small Table
+      </label>
     </div>
   </div>
   <div class="col">
     <input type="text" class="form-control" id="filter" placeholder="Filter..." [formControl]="filterInput" />
   </div>
 </div>
-<hr />
 
-<!-- add -->
-<hr />
 <div class="d-flex justify-content-end mb-3">
   <button class="btn btn-primary" routerLink="/budget/item-add">Add</button>
 </div>
@@ -29,6 +27,7 @@
 
 <table class="table table-hover" [class.table-sm]="isSmallTable">
   <thead>
+    <th></th>
     <th>#</th>
     <th>Title</th>
     <th class="text-end pe-5">Price</th>
@@ -39,12 +38,18 @@
   <tbody>
     @for (item of filterItems; track item.id) {
     <tr>
+      <td routerLink="/budget/item-edit/{{ item.id }}"><i class="bi bi-pencil"></i></td>
       <td>{{ item.id }}</td>
       <td>{{ item.title }}</td>
       <td class="text-end pe-5">{{ item.price | number:'1.2-2' }}</td>
       <td class="text-end pe-5">{{ item.amount | number:'1.2-2' }}</td>
       <td class="text-center">{{ item.contactMobileNo | mobileFormat }}</td>
       <td class="text-center">{{ item.status }}</td>
+    </tr>
+    }
+    @empty {
+    <tr>
+      <td colspan="6" class="text-center">Data not found</td>
     </tr>
     }
   </tbody>

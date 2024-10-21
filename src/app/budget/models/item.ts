@@ -12,6 +12,8 @@ export enum ItemStatus {
 
 export type CreateItem = Omit<Item, "id">
 
+export type EditIem = CreateItem
+
 export interface Item {
   id: number;
   title: string;

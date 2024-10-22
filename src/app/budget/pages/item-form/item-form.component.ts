@@ -1,10 +1,13 @@
-// item-form.component.ts
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JsonPipe, Location } from '@angular/common';
 import { thMobile } from '../../../shared/validators/th-mobile.validator';
 import { ItemService } from '../../item.service';
 import { ItemStatus } from '../../models/item';
+import { CanComponentDeactivate } from '../../../auth/guards/can-deactivate.guard';
+import { Observable } from 'rxjs';
+import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { ConfirmModalComponent } from '../../../shared/components/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-item-form',
@@ -13,21 +16,23 @@ import { ItemStatus } from '../../models/item';
   templateUrl: './item-form.component.html',
   styleUrl: './item-form.component.scss'
 })
-export class ItemFormComponent implements OnInit {
+export class ItemFormComponent implements OnInit, CanComponentDeactivate {
 
+  // add
   @Input()
   id: number | null = null;
 
-  // injects
   location = inject(Location);
+
   fb = inject(NonNullableFormBuilder)
+
   itemService = inject(ItemService)
 
   // formControls
   title = this.fb.control<string>('', { validators: Validators.required });
   contactMobileNo = this.fb.control<string>('', { validators: [Validators.required, thMobile] });
-  amount = this.fb.control<number>(0, { validators: [Validators.required, Validators.min(1)] });
-  price = this.fb.control<number>(0, { validators: [Validators.required, Validators.min(0.5)] });
+  amount = this.fb.control<number>(null!, { validators: [Validators.required, Validators.min(1)] });
+  price = this.fb.control<number>(null!, { validators: [Validators.required, Validators.min(0.5)] });
 
   // formGroup
   fg = this.fb.group({
@@ -37,13 +42,16 @@ export class ItemFormComponent implements OnInit {
     price: this.price
   })
 
+  // add
+  modalService = inject(BsModalService)
+  bsModalRef?: BsModalRef;
+
   ngOnInit() {
-    console.log('id', this.id)
+    console.log('id', this.id) // ???
     if (this.id) {
       this.itemService.get(this.id).subscribe(v => this.fg.patchValue(v))
     }
   }
-
 
   onBack(): void {
     this.location.back();
@@ -51,11 +59,34 @@ export class ItemFormComponent implements OnInit {
 
   onSubmit(): void {
     const item = { ...this.fg.getRawValue(), status: ItemStatus.PENDING };
-    console.log(item)
     if (this.id) {
       this.itemService.edit(this.id, item).subscribe(() => this.onBack());
     } else {
       this.itemService.add(item).subscribe(() => this.onBack())
     }
+  }
+
+  canDeactivate(): boolean | Observable<boolean> {
+    // check is dirty-form
+    const isFormDirty = this.fg.dirty
+    console.log('isFormDirty', isFormDirty)
+    if (!isFormDirty) {
+      return true;
+    }
+
+    // init comfirm modal
+    const initialState: ModalOptions = {
+      initialState: {
+        title: `Confirm to leave" ?`
+      }
+    };
+    this.bsModalRef = this.modalService.show(ConfirmModalComponent, initialState);
+
+    return new Observable<boolean>((observer) => {
+      this.bsModalRef?.onHidden?.subscribe(() => {
+        observer.next(this.bsModalRef?.content?.confirmed);
+        observer.complete()
+      })
+    })
   }
 }

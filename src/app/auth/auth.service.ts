@@ -13,11 +13,21 @@ export class AuthService {
 
   private envConfig = inject(ENV_CONFIG);
   readonly URL = `${this.envConfig.apiUrl}/auth/login`;
+  readonly TOKENS = 'TOKENS'
+
 
   httpClient = inject(HttpClient);
-  router = inject(Router) // add
+  router = inject(Router)
 
   loggedInUser: LoggedInUser | null = null;
+
+  // add
+  constructor() {
+    const tokensInStorage = sessionStorage.getItem(this.TOKENS);
+    if (tokensInStorage) {
+      this.setTokens(JSON.parse(tokensInStorage) as Tokens);
+    }
+  }
 
   login(credential: { username: string; password: string }): Observable<Tokens> {
     return this.httpClient
@@ -28,11 +38,12 @@ export class AuthService {
   setTokens(newToken: Tokens) {
     const userProfile = jwtDecode<UserProfile>(newToken.access_token);
     this.loggedInUser = { tokens: newToken, userProfile };
+    sessionStorage.setItem(this.TOKENS, JSON.stringify(newToken)); // add
   }
 
-  // add
   logout(): void {
     this.loggedInUser = null;
     this.router.navigate(['/auth/login']);
+    sessionStorage.removeItem(this.TOKENS)
   }
 }

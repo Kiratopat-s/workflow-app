@@ -12,10 +12,12 @@ import { AuthService } from '../../auth.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+  @Input()
+  code = '';
 
   // router
-  route = inject(ActivatedRoute) // add
+  route = inject(ActivatedRoute); // add
   router = inject(Router);
 
   /// auth.service
@@ -33,6 +35,14 @@ export class LoginComponent {
 
   // error
   error?: any;
+
+  ngOnInit() {
+    if (this.code) {
+      this.authService
+        .loginOauth2(this.code)
+        .subscribe(() => this.router.navigate(['/']));
+    }
+  }
 
   onLogin() {
     this.authService.login(this.fg.getRawValue()).subscribe({

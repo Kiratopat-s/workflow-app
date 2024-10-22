@@ -1,12 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { CreateItem, EditIem, Item, ItemStatus } from './models/item';
+import { ENV_CONFIG } from '../env.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ItemService {
-  readonly URL = 'http://localhost:3000/items';
+
+  // change to use envConfig
+  private envConfig = inject(ENV_CONFIG);
+  readonly URL = `${this.envConfig.apiUrl}/items`;
+
   private httpClient = inject(HttpClient);
 
   constructor() { }
@@ -31,12 +36,11 @@ export class ItemService {
     return this.httpClient.delete<void>(`${this.URL}/${id}`);
   }
 
-  // TODO: temp update by front-end
   approve(id: number) {
-    return this.httpClient.patch<Item>(`${this.URL}/${id}`, { status: ItemStatus.APPROVED });
+    return this.httpClient.patch<Item>(`${this.URL}/${id}/approve`, null);
   }
 
   reject(id: number) {
-    return this.httpClient.patch<Item>(`${this.URL}/${id}`, { status: ItemStatus.REJECTED });
+    return this.httpClient.patch<Item>(`${this.URL}/${id}/reject`, null);
   }
 }

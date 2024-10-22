@@ -1,22 +1,21 @@
 import { HttpClient } from '@angular/common/http';
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { Observable, tap } from 'rxjs';
-import { LoggedInUser, Tokens, UserProfile } from './models/logged-in-user';
 import { ENV_CONFIG } from '../env.config';
-import { Router } from '@angular/router';
+import { LoggedInUser, Tokens, UserProfile } from './models/logged-in-user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
   private envConfig = inject(ENV_CONFIG);
   readonly URL = `${this.envConfig.apiUrl}/auth/login`;
-  readonly TOKENS = 'TOKENS'
+  readonly TOKENS = 'TOKENS';
 
   httpClient = inject(HttpClient);
-  router = inject(Router)
+  router = inject(Router);
 
   loggedInUser: LoggedInUser | null = null;
 
@@ -52,5 +51,17 @@ export class AuthService {
       `${this.envConfig.apiUrl}/auth/refresh`,
       null
     );
+  }
+
+  getLoginOauth2RedirectUrl() {
+    return this.httpClient.get<{ redirectUrl: string }>(
+      `${this.envConfig.apiUrl}/auth/login-oauth2-redirect-url`
+    );
+  }
+
+  loginOauth2(code: string) {
+    return this.httpClient
+      .post<any>(`${this.envConfig.apiUrl}/auth/login-oauth2`, { code })
+      .pipe(tap((newToken) => this.setTokens(newToken)));
   }
 }

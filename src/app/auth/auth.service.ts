@@ -15,7 +15,6 @@ export class AuthService {
   readonly URL = `${this.envConfig.apiUrl}/auth/login`;
   readonly TOKENS = 'TOKENS'
 
-
   httpClient = inject(HttpClient);
   router = inject(Router)
 
@@ -43,7 +42,15 @@ export class AuthService {
 
   logout(): void {
     this.loggedInUser = null;
+    sessionStorage.removeItem(this.TOKENS);
     this.router.navigate(['/auth/login']);
-    sessionStorage.removeItem(this.TOKENS)
+  }
+
+  // add
+  refreshToken(): Observable<{ access_token: string }> {
+    return this.httpClient.post<{ access_token: string }>(
+      `${this.envConfig.apiUrl}/auth/refresh`,
+      null
+    );
   }
 }

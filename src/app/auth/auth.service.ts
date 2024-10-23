@@ -65,12 +65,12 @@ export class AuthService {
       .pipe(tap((newToken) => this.setTokens(newToken)));
   }
 
-  getCurrentUserId(): number | null {
+  getCurrentProfile(): UserProfile | null {
     const tokensInStorage = sessionStorage.getItem(this.TOKENS);
     if (tokensInStorage) {
       const tokens: Tokens = JSON.parse(tokensInStorage);
       const userProfile = jwtDecode<UserProfile>(tokens.access_token);
-      return userProfile.id;
+      return userProfile;
     }
     return null;
   }

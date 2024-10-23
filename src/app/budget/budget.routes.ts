@@ -7,7 +7,7 @@ import { ItemFormComponent } from './pages/item-form/item-form.component';
 import { canDeactivateGuard } from '../auth/guards/can-deactivate.guard';
 
 export const routes: Routes = [
-  { path: 'item-entry', component: ItemEntryComponent, title: 'Entry' },
+  { path: 'item', component: ItemEntryComponent, title: 'List' },
   { path: 'item-add', component: ItemFormComponent, title: 'Add', canDeactivate: [canDeactivateGuard] }, // add
   { path: 'item-edit/:id', component: ItemFormComponent, title: 'Edit' },
   {

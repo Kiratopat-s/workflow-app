@@ -18,11 +18,11 @@ export class NavbarComponent implements OnInit {
     const userRole = this.authService.getCurrentProfile()?.role; // Assuming this method exists
     if (userRole === 'USER') {
       this.menus = [
-        { path: 'budget/item-entry', title: 'Entry' }
+        { path: 'budget/item', title: 'List' }
       ];
     } else {
       this.menus = [
-        { path: 'budget/item-entry', title: 'Entry' },
+        { path: 'budget/item', title: 'List' },
         { path: 'budget/item-approval', title: 'Approval' }
       ];
     }

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 
@@ -9,23 +9,31 @@ import { AuthService } from '../../auth/auth.service';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
 
-  // add
   authService = inject(AuthService);
+  menus: { path: string, title: string }[] = [];
 
-  menus = [
-    { path: 'budget/item-entry', title: 'Entry' },
-    { path: 'budget/item-approval', title: 'Approval' }
-  ]
+  ngOnInit() {
+    const userRole = this.authService.getCurrentProfile()?.role; // Assuming this method exists
+    if (userRole === 'USER') {
+      this.menus = [
+        { path: 'budget/item-entry', title: 'Entry' }
+      ];
+    } else {
+      this.menus = [
+        { path: 'budget/item-entry', title: 'Entry' },
+        { path: 'budget/item-approval', title: 'Approval' }
+      ];
+    }
+  }
 
-  // add
   onLogout(): void {
     this.authService.logout();
   }
 
   onKeycloakLogin() {
     this.authService.getLoginOauth2RedirectUrl()
-      .subscribe((v) => window.location.replace(v.redirectUrl))
+      .subscribe((v) => window.location.replace(v.redirectUrl));
   }
 }

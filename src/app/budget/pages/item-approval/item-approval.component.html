@@ -6,9 +6,9 @@
     <th></th>
     <th>#</th>
     <th>Title</th>
-    <th class="text-end pe-5">Price</th>
     <th class="text-end pe-5">Amount</th>
-    <th class="text-center">Contact Mobile No</th>
+    <th class="text-end pe-5">Quantity</th>
+    <th class="text-center">Owner id</th>
     <th class="text-center">Status</th>
   </thead>
   <tbody>
@@ -26,9 +26,9 @@
       </td>
       <td>{{ item.id }}</td>
       <td>{{ item.title }}</td>
-      <td class="text-end pe-5">{{ item.price | number: '1.2-2' }}</td>
-      <td class="text-end pe-5">{{ item.amount | number: '1.2-2' }}</td>
-      <td class="text-center">{{ item.contactMobileNo | mobileFormat }}</td>
+      <td class="text-end pe-5">{{ item.amount | number:'1.2-4' }}</td>
+      <td class="text-end pe-5">{{ item.quantity }}</td>
+      <td class="text-center">{{ item.owner.username }}</td>
       <td class="text-center">{{ item.status }}</td>
     </tr>
     } @empty {

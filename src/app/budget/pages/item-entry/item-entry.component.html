@@ -25,7 +25,7 @@
 
 <hr />
 <div class="d-flex justify-content-end mb-3">
-  <button class="btn btn-primary" routerLink="add">Add</button>
+  <button class="btn btn-primary" routerLink="../item-add">Add</button>
 </div>
 
 
@@ -34,23 +34,23 @@
     <th></th>
     <th>#</th>
     <th>Title</th>
-    <th class="text-end pe-5">Price</th>
     <th class="text-end pe-5">Amount</th>
-    <th class="text-center">Contact Mobile No</th>
+    <th class="text-end pe-5">Quantity</th>
+    <th class="text-center">Owner</th>
     <th class="text-center">Status</th>
   </thead>
   <tbody>
     @for (item of filterItems; track item.id) {
     <tr>
       <td>
-        <i class="bi bi-pencil mx-2" routerLink="edit/{{ item.id }}"></i>
+        <i class="bi bi-pencil mx-2" routerLink="../item-edit/{{ item.id }}"></i>
         <i class="bi bi-trash mx-2" (click)="onConfirm(item)"></i>
       </td>
       <td>{{ item.id }}</td>
       <td>{{ item.title }}</td>
-      <td class="text-end pe-5">{{ item.price | number:'1.2-2' }}</td>
-      <td class="text-end pe-5">{{ item.amount | number:'1.2-2' }}</td>
-      <td class="text-center">{{ item.contactMobileNo | mobileFormat }}</td>
+      <td class="text-end pe-5">{{ item.amount | number:'1.2-4' }}</td>
+      <td class="text-end pe-5">{{ item.quantity }}</td>
+      <td class="text-center">{{ item.owner.username }}</td>
       <td class="text-center">{{ item.status }}</td>
     </tr>
     }

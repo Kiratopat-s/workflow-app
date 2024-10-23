@@ -73,8 +73,8 @@ export class ItemApprovalComponent {
   private updateUsed() {
     const used = this.items
       .filter((v) => v.status === ItemStatus.APPROVED) // [{ id: 5, price: 600, ... }, { id: 8, price: 1200, ... }]
-      .map((v) => v.price) // [600, 1200]
-      .reduce((previos, current) => (previos += current), 0);
+      .map((v) => Number(v.amount)) // [600, 1200]
+      .reduce((previous: number, current: number) => previous + current, 0);
 
     this.budgetPlanService.updateUsed(used);
 

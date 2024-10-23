@@ -62,4 +62,12 @@ export class ItemEntryComponent {
   onDelete(id: number) {
     this.itemService.delete(id).subscribe(() => this.filterItems = this.filterItems.filter(v => v.id != id));
   }
+
+  onFilter(status: string): void {
+    if (status === 'ALL') {
+      this.filterItems = this.items;
+    } else {
+      this.filterItems = this.items.filter((item) => item.status === status);
+    }
+  }
 }

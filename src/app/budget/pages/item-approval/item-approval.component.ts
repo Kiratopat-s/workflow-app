@@ -1,6 +1,6 @@
-import { DecimalPipe } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { ConfirmModalComponent } from '../../../shared/components/confirm-modal/confirm-modal.component';
 import { MobileFormatPipe } from '../../../shared/pipes/mobile-format.pipe';
@@ -8,21 +8,35 @@ import { ItemService } from '../../item.service';
 import { Item, ItemStatus } from '../../models/item';
 import { BudgetPlanComponent } from '../../components/budget-plan/budget-plan.component';
 import { BudgetPlanService } from '../../budget-plan.service';
+import { map } from 'rxjs';
+import { LucideAngularModule, LogIn, KeyRound, LogOut, User, IdCard, Scroll, Stamp } from 'lucide-angular';
 
 type ItemAction = 'Approve' | 'Reject';
 
 @Component({
   selector: 'app-item-approval',
   standalone: true,
-  imports: [ReactiveFormsModule, DecimalPipe, MobileFormatPipe, BudgetPlanComponent],
+  imports: [ReactiveFormsModule, DecimalPipe, MobileFormatPipe, BudgetPlanComponent, CommonModule, LucideAngularModule],
   templateUrl: './item-approval.component.html',
   styleUrl: './item-approval.component.scss'
 })
 export class ItemApprovalComponent {
+  readonly icons = {
+    Login: LogIn,
+    Key: KeyRound,
+    Logout: LogOut,
+    User: User,
+    IdCard: IdCard,
+    Scroll: Scroll,
+    Stamp: Stamp
+  };
+
   itemService = inject(ItemService);
   budgetPlanService = inject(BudgetPlanService)
 
   items: Item[] = [];
+  filterItems = this.items;
+  filterInput = new FormControl<string>('', { nonNullable: true });
 
   modalService = inject(BsModalService);
   bsModalRef?: BsModalRef;
@@ -32,7 +46,16 @@ export class ItemApprovalComponent {
   constructor() {
     this.itemService.list().subscribe((vs) => {
       this.items = vs;
+      this.filterItems = vs;
       this.updateUsed();
+
+      this.filterInput.valueChanges
+        .pipe(map((keyword) => keyword.toLocaleLowerCase()))
+        .subscribe((keyword) => {
+          this.filterItems = this.items.filter((item) =>
+            item.title.toLocaleLowerCase().includes(keyword)
+          );
+        });
     });
   }
 
@@ -59,15 +82,31 @@ export class ItemApprovalComponent {
   onApprove(id: number) {
     this.itemService.approve(id).subscribe(() => {
       this.items = this.items.map((v) => (v.id === id ? { ...v, status: ItemStatus.APPROVED } : v));
-      this.updateUsed();
+      this.itemService.list().subscribe((vs) => {
+        this.items = vs;
+        this.filterItems = vs;
+        this.updateUsed();
+      });
     });
   }
 
   onReject(id: number) {
     this.itemService.reject(id).subscribe(() => {
       this.items = this.items.map((v) => (v.id === id ? { ...v, status: ItemStatus.REJECTED } : v));
-      this.updateUsed();
+      this.itemService.list().subscribe((vs) => {
+        this.items = vs;
+        this.filterItems = vs;
+        this.updateUsed();
+      });
     });
+  }
+
+  onFilter(status: string): void {
+    if (status === 'ALL') {
+      this.filterItems = this.items;
+    } else {
+      this.filterItems = this.items.filter((item) => item.status === status);
+    }
   }
 
   private updateUsed() {

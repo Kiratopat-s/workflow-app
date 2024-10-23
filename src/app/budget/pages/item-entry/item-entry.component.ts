@@ -4,7 +4,7 @@ import { map } from 'rxjs';
 import { ItemService } from '../../item.service';
 import { Item } from '../../models/item';
 import { MobileFormatPipe } from '../../../shared/pipes/mobile-format.pipe';
-import { DecimalPipe } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { ConfirmModalComponent } from '../../../shared/components/confirm-modal/confirm-modal.component';
@@ -13,7 +13,7 @@ import { BudgetPlanComponent } from "../../components/budget-plan/budget-plan.co
 @Component({
   selector: 'app-item-entry',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MobileFormatPipe, DecimalPipe, RouterLink, BudgetPlanComponent], // add
+  imports: [FormsModule, ReactiveFormsModule, MobileFormatPipe, DecimalPipe, RouterLink, BudgetPlanComponent, CommonModule],
   templateUrl: './item-entry.component.html',
   styleUrl: './item-entry.component.scss'
 })

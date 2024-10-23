@@ -7,10 +7,13 @@
 <hr />
 <div class="row">
   <div class="col">
-    <button class="mx-2 btn btn-primary" (click)="onFilter('ALL')">All</button>
-    <button class="mx-2 btn btn-primary" (click)="onFilter('APPROVED')">Approved</button>
-    <button class="mx-2 btn btn-primary" (click)="onFilter('PENDING')">Pending</button>
-    <button class="mx-2 btn btn-primary" (click)="onFilter('REJECTED')">Rejected</button>
+    <strong>Show item by status : </strong>
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+      <button type="button" class="btn btn-primary" (click)="onFilter('ALL')">All status</button>
+      <button type="button" class="btn btn-success" (click)="onFilter('APPROVED')">Approved</button>
+      <button type="button" class="btn btn-info" (click)="onFilter('PENDING')">Pending</button>
+      <button type="button" class="btn btn-danger" (click)="onFilter('REJECTED')">Rejected</button>
+    </div>
   </div>
   <div class="col">
     <input type="text" class="form-control" id="filter" placeholder="Filter by item name..."
@@ -46,7 +49,16 @@
       <td class="text-end pe-5">{{ item.amount | number:'1.4-4' }}</td>
       <td class="text-end pe-5">{{ item.quantity }}</td>
       <td class="text-center">{{ item.owner.username }}</td>
-      <td class="text-center">{{ item.status }}</td>
+      <td class="text-center text-white">
+        <span class="badge" [ngClass]="{
+          'text-bg-success': item.status === 'APPROVED',
+          'text-bg-info': item.status === 'PENDING',
+          'text-bg-danger': item.status === 'REJECTED',
+          'text-bg-primary': item.status !== 'APPROVED' && item.status !== 'PENDING' && item.status !== 'REJECTED'
+        }">
+          {{ item.status }}
+        </span>
+      </td>
     </tr>
     }
     @empty {

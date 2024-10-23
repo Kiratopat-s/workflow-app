@@ -10,15 +10,25 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { ConfirmModalComponent } from '../../../shared/components/confirm-modal/confirm-modal.component';
 import { BudgetPlanComponent } from "../../components/budget-plan/budget-plan.component";
 import { BudgetPlanService } from '../../budget-plan.service';
+import { LucideAngularModule, LogIn, KeyRound, LogOut, User, IdCard, Scroll, Stamp } from 'lucide-angular';
 
 @Component({
   selector: 'app-item-entry',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MobileFormatPipe, DecimalPipe, RouterLink, BudgetPlanComponent, CommonModule],
+  imports: [FormsModule, ReactiveFormsModule, MobileFormatPipe, DecimalPipe, RouterLink, BudgetPlanComponent, CommonModule, LucideAngularModule],
   templateUrl: './item-entry.component.html',
   styleUrl: './item-entry.component.scss'
 })
 export class ItemEntryComponent {
+  readonly icons = {
+    Login: LogIn,
+    Key: KeyRound,
+    Logout: LogOut,
+    User: User,
+    IdCard: IdCard,
+    Scroll: Scroll,
+    Stamp: Stamp
+  };
   isSmallTable = false;
 
   itemService = inject(ItemService);

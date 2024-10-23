@@ -40,15 +40,20 @@ export class LoginComponent implements OnInit {
     if (this.code) {
       this.authService
         .loginOauth2(this.code)
-        .subscribe(() => this.router.navigate(['/']));
+        .subscribe(() => {
+          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || 'budget/item-entry'
+          this.router.navigate([returnUrl])
+        });
     }
   }
 
   onLogin() {
     this.authService.login(this.fg.getRawValue()).subscribe({
       next: () => {
-        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/'; // add
+        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || 'budget/item-entry'; // add
         this.router.navigate([returnUrl]); // add
+        console.log('login success');
+        console.log(returnUrl);
       },
       error: (error) => (this.error = error)
     });

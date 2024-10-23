@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
       this.authService
         .loginOauth2(this.code)
         .subscribe(() => {
-          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || 'budget/item-entry'
+          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || 'budget/item'
           this.router.navigate([returnUrl])
         });
     }
@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
   onLogin() {
     this.authService.login(this.fg.getRawValue()).subscribe({
       next: () => {
-        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || 'budget/item-entry'; // add
+        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || 'budget/item'; // add
         this.router.navigate([returnUrl]); // add
         console.log('login success');
         console.log(returnUrl);

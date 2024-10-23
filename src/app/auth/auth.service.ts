@@ -64,4 +64,14 @@ export class AuthService {
       .post<any>(`${this.envConfig.apiUrl}/auth/login-oauth2`, { code })
       .pipe(tap((newToken) => this.setTokens(newToken)));
   }
+
+  getCurrentUserId(): number | null {
+    const tokensInStorage = sessionStorage.getItem(this.TOKENS);
+    if (tokensInStorage) {
+      const tokens: Tokens = JSON.parse(tokensInStorage);
+      const userProfile = jwtDecode<UserProfile>(tokens.access_token);
+      return userProfile.id;
+    }
+    return null;
+  }
 }

@@ -7,10 +7,6 @@ export type CreateItem = Omit<Item, "id">
 
 export type EditIem = CreateItem
 
-// "owner": {
-//             "id": 6,
-//             "username": "kirato"
-//         },
 export interface ItemUserRelation {
   id: number;
   username: string;

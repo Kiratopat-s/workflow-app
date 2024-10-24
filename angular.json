@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "devpool-final-fe": {
+    "workflow-app": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/devpool-final-fe",
+            "outputPath": "dist/workflow-app",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -64,10 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "devpool-final-fe:build:production"
+              "buildTarget": "workflow-app:build:production"
             },
             "development": {
-              "buildTarget": "devpool-final-fe:build:development"
+              "buildTarget": "workflow-app:build:development"
             }
           },
           "defaultConfiguration": "development"

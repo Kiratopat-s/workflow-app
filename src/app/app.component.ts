@@ -10,5 +10,5 @@ import { NavbarComponent } from "./layout/navbar/navbar.component";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'devpool-final-fe';
+  title = 'Workflow-app';
 }

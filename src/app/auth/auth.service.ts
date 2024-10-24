@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { Observable, tap } from 'rxjs';
-import { ENV_CONFIG } from '../env.config';
+import { ENV_CONFIG } from '../../../env.config';
 import { LoggedInUser, Tokens, UserProfile } from './models/logged-in-user';
 
 @Injectable({

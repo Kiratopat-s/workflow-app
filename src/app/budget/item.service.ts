@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { CreateItem, EditIem, Item, ItemStatus } from './models/item';
-import { ENV_CONFIG } from '../env.config';
+import { ENV_CONFIG } from '../../../env.config';
 
 @Injectable({
   providedIn: 'root'

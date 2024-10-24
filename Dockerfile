@@ -20,7 +20,7 @@ RUN npm run build --omit=dev
 FROM nginx:alpine
 
 # Copy the built Angular application from the previous stage
-COPY --from=build app/dist/workflow-app /usr/share/nginx/html
+COPY --from=build /app/dist/workflow-app /usr/share/nginx/html
 
 # Copy the Nginx configuration file
 COPY nginx.conf /etc/nginx/nginx.conf

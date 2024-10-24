@@ -5,6 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import { Observable, tap } from 'rxjs';
 import { ENV_CONFIG } from '../../../env.config';
 import { LoggedInUser, Tokens, UserProfile } from './models/logged-in-user';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,10 @@ export class AuthService {
 
   loggedInUser: LoggedInUser | null = null;
 
-  // add
+  // Observable to notify about login/logout events
+  private authStatusSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
+  authStatus = this.authStatusSubject.asObservable();
+
   constructor() {
     const tokensInStorage = sessionStorage.getItem(this.TOKENS);
     if (tokensInStorage) {
@@ -30,18 +34,22 @@ export class AuthService {
   login(credential: { username: string; password: string }): Observable<Tokens> {
     return this.httpClient
       .post<Tokens>(this.URL, credential)
-      .pipe(tap((newToken) => this.setTokens(newToken)));
+      .pipe(tap((newToken) => {
+        this.setTokens(newToken);
+        this.authStatusSubject.next(true);
+      }));
   }
 
   setTokens(newToken: Tokens) {
     const userProfile = jwtDecode<UserProfile>(newToken.access_token);
     this.loggedInUser = { tokens: newToken, userProfile };
-    sessionStorage.setItem(this.TOKENS, JSON.stringify(newToken)); // add
+    sessionStorage.setItem(this.TOKENS, JSON.stringify(newToken));
   }
 
   logout(): void {
     this.loggedInUser = null;
     sessionStorage.removeItem(this.TOKENS);
+    this.authStatusSubject.next(false);
     this.router.navigate(['/auth/login']);
   }
 
@@ -62,7 +70,10 @@ export class AuthService {
   loginOauth2(code: string) {
     return this.httpClient
       .post<any>(`${this.envConfig.apiUrl}/auth/login-oauth2`, { code })
-      .pipe(tap((newToken) => this.setTokens(newToken)));
+      .pipe(tap((newToken) => {
+        this.setTokens(newToken);
+        this.authStatusSubject.next(true);
+      }));
   }
 
   getCurrentProfile(): UserProfile | null {
@@ -73,5 +84,8 @@ export class AuthService {
       return userProfile;
     }
     return null;
+  }
+  isLoggedIn(): boolean {
+    return !!sessionStorage.getItem(this.TOKENS);
   }
 }

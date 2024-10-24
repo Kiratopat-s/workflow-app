@@ -1,5 +1,5 @@
 # Stage 1: Build the Angular application
-FROM node:18 AS build
+FROM node:20 AS build
 
 # Set the working directory
 WORKDIR /app
@@ -14,13 +14,13 @@ RUN npm install
 COPY . .
 
 # Build the Angular application
-RUN npm run build -- --configuration production
+RUN npm run build --omit=dev
 
 # Stage 2: Serve the application with Nginx
 FROM nginx:alpine
 
 # Copy the built Angular application from the previous stage
-COPY --from=build /app/dist/workflow-app /usr/share/nginx/html
+COPY --from=build app/dist/workflow-app /usr/share/nginx/html
 
 # Copy the Nginx configuration file
 COPY nginx.conf /etc/nginx/nginx.conf

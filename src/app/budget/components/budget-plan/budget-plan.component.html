@@ -19,7 +19,8 @@
       </div>
     </div>
     <div class="col">
-      <div class="alert alert-success" role="alert">Balance: {{ budgetPlan.available| number: '1.4-4' }}</div>
+      <div class="alert alert-success" role="alert">Balance: {{ (budgetPlan.available - budgetPlan.used)| number:
+        '1.4-4' }}</div>
     </div>
   </div>
 

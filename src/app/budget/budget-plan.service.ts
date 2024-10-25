@@ -46,7 +46,7 @@ export class BudgetPlanService {
     // this.budgetPlan = { ...this.budgetPlan, ...yearBudget };
     // console.log(BudgetPlanService.name, 'constructor', this.budgetPlan)
     this.budgetPlanState.update(v => ({ ...v, ...yearBudget }))
-    console.log(BudgetPlanService.name, 'constructor', this.budgetPlanState())
+    // console.log(BudgetPlanService.name, 'constructor', this.budgetPlanState())
   }
 
   updateAvailable(percent: number) {
@@ -60,7 +60,7 @@ export class BudgetPlanService {
       return { ...v, available };
     })
     // this.balance = this.budgetPlanState().available - this.budgetPlanState().used
-    console.log(BudgetPlanService.name, 'updateBaseUsed', this.budgetPlanState())
+    // console.log(BudgetPlanService.name, 'updateBaseUsed', this.budgetPlanState())
   }
 
   updateUsed(used: number) {

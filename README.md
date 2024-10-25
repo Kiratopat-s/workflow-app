@@ -5,7 +5,8 @@
 `Workflow App` is a frontend application for the `devpool-final-frontend` project. It is built using Angular and provides a user-friendly interface for managing workflows.
 
 ## Demo
-You can view a live demo of the application [here](https://app.kirato.online).
+You can view a live demo of the application 🌐 [here](https://app.kirato.online).
+Default user credentials for demo : 🧑‍💻 [here](https://playful-trail-961.notion.site/12996d4922c88078a5d9fefcffe00793?v=f90be4e1275247f6bc357289d686c5c0)
 
 ## Table of Contents
 

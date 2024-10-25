@@ -26,8 +26,8 @@ export class GithubComponent implements OnInit {
 
   constructor(private repoStatsService: RepoStatsService) { }
 
-  async ngOnInit() {
-    (await this.repoStatsService.getCommitActivity()).subscribe((res) => {
+  ngOnInit() {
+    (this.repoStatsService.getCommitActivity()).subscribe((res) => {
       console.log(res);
       this.feCommits = res.fe;
       this.beCommits = res.be;

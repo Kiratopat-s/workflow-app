@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LucideAngularModule, Github, GitCommit, BookUp2 } from 'lucide-angular';
 import { NavbarComponent } from '../layout/navbar/navbar.component';
@@ -24,7 +24,7 @@ export class GithubComponent implements OnInit {
   beCommits: number | string = 'Fetching...';
   gwCommits: number | string = 'Fetching...';
 
-  constructor(private repoStatsService: RepoStatsService) { }
+  constructor(@Inject(RepoStatsService) private repoStatsService: RepoStatsService) { }
 
   ngOnInit() {
     (this.repoStatsService.getCommitActivity()).subscribe((res) => {

@@ -1,43 +1,28 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, forkJoin, map } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ENV_CONFIG } from '../../../env.config';
 
-interface WeekCommitInfo {
-  day: number[];
-  total: number;
-  week: number;
+export interface CommitActivity {
+  fe: number;
+  be: number;
+  gw: number;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class RepoStatsService {
-
   private envConfig = inject(ENV_CONFIG);
-  readonly TOKEN = `${this.envConfig.githubToken}`;
-  private readonly GITHUB_API_URL = 'https://api.github.com/repos/Kiratopat-s/<REPO_NAME>/stats/commit_activity';
+  private readonly API_URL = `${this.envConfig.apiUrl}/github/total-commits`;
 
   constructor(private http: HttpClient) { }
 
-  getCommitActivity(): Observable<any> {
+  getCommitActivity(): Observable<CommitActivity> {
     const headers = new HttpHeaders({
-      'Accept': 'application/vnd.github+json',
-      'Authorization': `Bearer ${this.TOKEN}`,
-      'X-GitHub-Api-Version': '2022-11-28'
+      'Accept': 'application/json'
     });
 
-    const repos = ['workflow-app', 'workflow-api', 'workflow-final-gateway'];
-    const requests = repos.map(repo => this.http.get<WeekCommitInfo[]>(this.GITHUB_API_URL.replace('<REPO_NAME>', repo), { headers })
-      .pipe(
-        map(data => data.reduce((acc, curr) => acc + curr.total, 0))
-      )
-    );
-
-    return forkJoin({
-      fe: requests[0],
-      be: requests[1],
-      gw: requests[2]
-    });
+    return this.http.get<CommitActivity>(this.API_URL, { headers });
   }
 }

@@ -6,8 +6,6 @@ export const loggedInGuard: CanActivateFn = (route, state) => {
 
   const loggedInUser = inject(AuthService).loggedInUser;
 
-  console.log(loggedInGuard.name, loggedInUser)
-
   if (loggedInUser) {
     return true;
   }

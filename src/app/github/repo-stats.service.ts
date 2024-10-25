@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { mergeMap, Observable, retryWhen, throwError, timer } from 'rxjs';
 import { ENV_CONFIG } from '../../../env.config';
 
 export interface CommitActivity {
@@ -23,6 +23,17 @@ export class RepoStatsService {
       'Accept': 'application/json'
     });
 
-    return this.http.get<CommitActivity>(this.API_URL, { headers });
+    return this.http.get<CommitActivity>(this.API_URL, { headers }).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          mergeMap(error => {
+            if (error.status === 500) {
+              return timer(1000);
+            }
+            return throwError(error);
+          })
+        )
+      )
+    );
   }
 }

@@ -4,9 +4,13 @@
 
 `Workflow App` is a frontend application for the `devpool-final-frontend` project. It is built using Angular and provides a user-friendly interface for managing workflows.
 
+## Demo
+You can view a live demo of the application [here](https://app.kirato.online).
+
 ## Table of Contents
 
 - [Installation](#installation)
+- [Environment Variables](#environment-variables)
 - [Development](#development)
 - [Build](#build)
 - [Testing](#testing)
@@ -22,6 +26,23 @@ To get started with the project, clone the repository and install the dependenci
 git clone https://github.com/your-username/workflow-app.git
 cd workflow-app
 npm install
+```
+
+## Environment Variables
+The application uses environment variables to configure the API URL. Create a `env.config.ts` file in the root of the project and add the following:
+
+```ts
+import { InjectionToken } from "@angular/core";
+
+export type EnvConfig = {
+  apiUrl: string;
+};
+
+export const ENV_CONFIG = new InjectionToken<EnvConfig>('ENV_CONFIG', {
+  factory: () => {
+    return { apiUrl: 'http://localhost:3000' };
+  }
+});
 ```
 
 ## Development
